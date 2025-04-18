@@ -19,11 +19,11 @@ class DocumentTemplateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(): DocumentTemplateCollection
     {
         $documentTemplates = auth()->user()?->documentTemplates()->get() ?? [];
 
-        return response()->json(new DocumentTemplateCollection($documentTemplates));
+        return new DocumentTemplateCollection($documentTemplates);
     }
 
     /**
@@ -31,23 +31,23 @@ class DocumentTemplateController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(StoreDocumentTemplateRequest $request): JsonResponse
+    public function store(StoreDocumentTemplateRequest $request): DocumentTemplateResource
     {
         $templateData = DocumentTemplateService::handleData($request->validated(), $request->user(), $request->file('file'));
 
         $documentTemplate = $request->user()->documentTemplates()->create($templateData);
 
-        return response()->json(['data' => new DocumentTemplateResource($documentTemplate)]);
+        return new DocumentTemplateResource($documentTemplate);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(DocumentTemplate $template): JsonResponse
+    public function show(DocumentTemplate $template): DocumentTemplateResource
     {
         $documentTemplate = auth()->user()?->documentTemplates()->findOrFail($template->getKey());
 
-        return response()->json(['data' => new DocumentTemplateResource($documentTemplate)]);
+        return new DocumentTemplateResource($documentTemplate);
     }
 
     /**
@@ -55,13 +55,13 @@ class DocumentTemplateController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(StoreDocumentTemplateRequest $request, DocumentTemplate $template): JsonResponse
+    public function update(StoreDocumentTemplateRequest $request, DocumentTemplate $template): DocumentTemplateResource
     {
         $templateData = $templateData = DocumentTemplateService::handleData($request->validated(), $request->user(), $request->file('file'), $template);
 
         auth()->user()?->documentTemplates()->where('id', $template->getKey())->update($templateData);
 
-        return response()->json(['data' => new DocumentTemplateResource($template->fresh())]);
+        return new DocumentTemplateResource($template->fresh());
     }
 
     /**

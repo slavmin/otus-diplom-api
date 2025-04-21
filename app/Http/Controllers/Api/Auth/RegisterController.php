@@ -36,6 +36,6 @@ class RegisterController extends Controller
             'data' => [
                 'message' => 'Registered successfully',
             ],
-        ]);
+        ], 201);
     }
 }

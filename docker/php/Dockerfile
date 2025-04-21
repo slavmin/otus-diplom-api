@@ -56,20 +56,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --2
 
-#####################################
-# xDebug:
-#####################################
-RUN if [ ${XDEBUG_INSTALL} = true ]; then \
-	# Install the Xdebug extension
-	pecl install xdebug \
-;fi
-
-
 # COPYING config files
 COPY ./php/config/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./php/config/fpm-pool.conf ${PHP_INI_DIR}/php-fpm.d/www.conf
 COPY ./php/config/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
 COPY ./php/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+#####################################
+# xDebug:
+#####################################
+ARG XDEBUG_MODE=coverage
+RUN if [ ${XDEBUG_INSTALL} = true ]; then \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
+    echo "xdebug.mode=${XDEBUG_MODE}\n" >> ${PHP_INI_DIR}/conf.d/xdebug.ini \
+;fi
 
 # Switch to use a non-root user from here on
 USER $HOST_USER

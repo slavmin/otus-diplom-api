@@ -33,10 +33,10 @@ jobs:
       - name: Set deployment variables
         id: setvars
         run: |
-          RELEASE_DIR="/var/www/html/releases/$(date +%Y%m%d%H%M%S)"
+          RELEASE_DIR="/var/www/back/releases/$(date +%Y%m%d%H%M%S)"
           echo "temp_dir=/var/www/temp/app" >> $GITHUB_OUTPUT
           echo "release_dir=$RELEASE_DIR" >> $GITHUB_OUTPUT
-          echo "target_dir=/var/www/html/current" >> $GITHUB_OUTPUT
+          echo "target_dir=/var/www/back/current" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest

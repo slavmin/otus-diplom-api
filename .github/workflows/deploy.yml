@@ -74,7 +74,7 @@ jobs:
             # Copy files to release directory
             mkdir -p $RELEASE_DIR
             cp -R $TEMP_DIR/* $RELEASE_DIR
-            cd $RELEASE_DIR
+            # cd $RELEASE_DIR
 
             # Install dependencies and optimize
             # composer install --optimize-autoloader --no-dev

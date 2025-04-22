@@ -89,7 +89,7 @@ jobs:
 
             # Copy files with verification
             echo "Copying files from $TEMP_DIR to $RELEASE_DIR"
-            cp -Rv $TEMP_DIR/* $RELEASE_DIR/ || exit 1
+            cp -Rv $TEMP_DIR/. $RELEASE_DIR/ || exit 1
             echo "Copied files successfully"
 
             # Verify files in release directory

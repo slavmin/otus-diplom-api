@@ -88,7 +88,7 @@ jobs:
             # chown -R www-data:www-data $RELEASE_DIR/bootstrap/cache
 
             # Clear temp folder
-            rm -rf $TEMP_DIR/*
+            # rm -rf $TEMP_DIR/*
 
   rollback:
     runs-on: ubuntu-latest

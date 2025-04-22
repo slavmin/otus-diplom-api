@@ -102,8 +102,8 @@ jobs:
             echo "Updated symlink to point to $RELEASE_DIR"
 
             # Cleanup (uncomment when working)
-            # rm -rf $TEMP_DIR/*
-            # echo "Cleaned up temp directory"
+            rm -rf $TEMP_DIR/*
+            echo "Cleaned up temp directory"
 
   rollback:
     runs-on: ubuntu-latest

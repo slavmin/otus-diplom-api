@@ -65,11 +65,8 @@ COPY ./php/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 #####################################
 # xDebug:
 #####################################
-ARG XDEBUG_MODE=coverage
 RUN if [ ${XDEBUG_INSTALL} = true ]; then \
-    pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    echo "xdebug.mode=${XDEBUG_MODE}\n" >> ${PHP_INI_DIR}/conf.d/xdebug.ini \
+    pecl install xdebug && docker-php-ext-enable xdebug \
 ;fi
 
 # Switch to use a non-root user from here on

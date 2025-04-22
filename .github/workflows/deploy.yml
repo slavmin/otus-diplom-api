@@ -34,7 +34,7 @@ jobs:
         id: setvars
         run: |
           RELEASE_DIR="/var/www/back/releases/$(date +%Y%m%d%H%M%S)"
-          echo "temp_dir=/var/www/temp/app" >> $GITHUB_OUTPUT
+          echo "temp_dir=/var/www/tmp/app" >> $GITHUB_OUTPUT
           echo "release_dir=$RELEASE_DIR" >> $GITHUB_OUTPUT
           echo "target_dir=/var/www/back/current" >> $GITHUB_OUTPUT
 
@@ -77,18 +77,18 @@ jobs:
             cd $RELEASE_DIR
 
             # Install dependencies and optimize
-            composer install --optimize-autoloader --no-dev
-            php artisan optimize:clear && php artisan optimize
+            # composer install --optimize-autoloader --no-dev
+            # php artisan optimize:clear && php artisan optimize
 
             # Update symlink
-            ln -sfn $RELEASE_DIR $TARGET_DIR
+            # ln -sfn $RELEASE_DIR $TARGET_DIR
 
             # Fix permissions
-            chown -R www-data:www-data $RELEASE_DIR/storage
-            chown -R www-data:www-data $RELEASE_DIR/bootstrap/cache
+            # chown -R www-data:www-data $RELEASE_DIR/storage
+            # chown -R www-data:www-data $RELEASE_DIR/bootstrap/cache
 
             # Clear temp folder
-            rm -rf $TEMP_DIR/.
+            rm -rf $TEMP_DIR/*
 
   rollback:
     runs-on: ubuntu-latest

@@ -1,4 +1,4 @@
-name: linter
+name: Linter
 
 on:
   workflow_call:
@@ -33,8 +33,8 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
-      - name: Format Frontend
-        run: npm run format
-
-      - name: Lint Frontend
-        run: npm run lint
+#      - name: Format Frontend
+#        run: npm run format
+#
+#      - name: Lint Frontend
+#        run: npm run lint

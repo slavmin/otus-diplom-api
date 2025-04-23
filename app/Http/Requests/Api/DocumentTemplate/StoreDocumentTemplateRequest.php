@@ -53,8 +53,8 @@ class StoreDocumentTemplateRequest extends FormRequest
         $validator->after(function (Validator $validator): void {
             /** @var User $user */
             $user = $this->user();
-            if ($user->documentTemplates()->count() >= 5) {
-                $validator->errors()->add('limit', 'Вы не можете создать больше 5 шаблонов');
+            if ($user->documentTemplates()->count() >= 3) {
+                $validator->errors()->add('limit', 'Вы не можете создать больше 3 шаблонов');
             }
         });
     }

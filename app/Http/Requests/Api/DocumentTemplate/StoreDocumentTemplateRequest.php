@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\DocumentTemplate;
 
+use App\Models\User;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDocumentTemplateRequest extends FormRequest
@@ -44,5 +46,16 @@ class StoreDocumentTemplateRequest extends FormRequest
             'file.mimetypes' => 'Шаблон должен быть Word файлом',
             'file.max' => 'Размер файла не должен превышать 1 мегабайт',
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            /** @var User $user */
+            $user = $this->user();
+            if ($user->documentTemplates()->count() >= 5) {
+                $validator->errors()->add('limit', 'Вы не можете создать больше 5 шаблонов');
+            }
+        });
     }
 }

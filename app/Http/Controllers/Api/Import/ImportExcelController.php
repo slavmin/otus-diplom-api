@@ -10,6 +10,7 @@ use App\Services\ImportExcelService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ImportExcelController extends Controller
 {
@@ -17,6 +18,8 @@ class ImportExcelController extends Controller
 
     /**
      * Handle the incoming request.
+     *
+     * @throws ValidationException
      */
     public function __invoke(ImportExcelRequest $request): JsonResponse
     {
@@ -31,6 +34,10 @@ class ImportExcelController extends Controller
             'header' => $headerArr,
             'rows' => $bodyArr,
         ];
+
+        if (count($bodyArr) > 2) {
+            throw ValidationException::withMessages(['rows' => 'Количество лиц превышает лимит в 5 человек']);
+        }
 
         // Сохраняем в кэш
         Cache::put($cacheKey, $importedData, self::CACHE_KEY_TTL);

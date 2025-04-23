@@ -35,8 +35,8 @@ class ImportExcelController extends Controller
             'rows' => $bodyArr,
         ];
 
-        if (count($bodyArr) > 2) {
-            throw ValidationException::withMessages(['rows' => 'Количество лиц превышает лимит в 5 человек']);
+        if (count($bodyArr) >= 5) {
+            throw ValidationException::withMessages(['limit' => 'Превышен лимит в 5 рядов']);
         }
 
         // Сохраняем в кэш

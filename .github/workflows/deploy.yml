@@ -37,6 +37,7 @@ jobs:
           echo "temp_dir=/var/www/tmp/back/app" >> $GITHUB_OUTPUT
           echo "release_dir=$RELEASE_DIR" >> $GITHUB_OUTPUT
           echo "target_dir=/var/www/back/current" >> $GITHUB_OUTPUT
+          echo "docker_dir=/var/www/docker" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
@@ -82,6 +83,7 @@ jobs:
             TEMP_DIR="${{ needs.setup.outputs.temp_dir }}"
             RELEASE_DIR="${{ needs.setup.outputs.release_dir }}"
             TARGET_DIR="${{ needs.setup.outputs.target_dir }}"
+            DOCKER_DIR="${{ needs.setup.outputs.docker_dir }}"
 
             # Create release directory
             mkdir -p $RELEASE_DIR || exit 1
@@ -106,12 +108,6 @@ jobs:
             ls -la $RELEASE_DIR || exit 1
             [ "$(ls -A $RELEASE_DIR)" ] || { echo "Release directory is empty!"; exit 1; }
 
-            # Install dependencies and optimize
-            #cd $RELEASE_DIR
-            #composer install --optimize-autoloader --no-dev
-            #php artisan optimize:clear && php artisan optimize
-            #echo "Installed dependencies"
-
             # Update symlink atomically
             ln -sfn "$RELEASE_DIR" "${TARGET_DIR}.tmp" && mv -fT "${TARGET_DIR}.tmp" "$TARGET_DIR"
             echo "Updated symlink to point $TARGET_DIR to $RELEASE_DIR"
@@ -119,6 +115,17 @@ jobs:
             # Cleanup (uncomment when working)
             rm -rf $TEMP_DIR/.
             echo "Cleaned up temp directory"
+
+            # Install dependencies and optimize
+            cd $DOCKER_DIR
+            chmod -R 777 /var/www/back && chown -R 33:33 /var/www/back
+            docker compose down
+            sleep 5
+            docker compose up -d
+            sleep 5
+            docker exec -it php-fpm composer install --optimize-autoloader --no-dev
+            docker exec -it php-fpm php artisan optimize:clear && php artisan optimize
+            echo "Installed dependencies"
 
   rollback:
     runs-on: ubuntu-latest
@@ -131,6 +138,7 @@ jobs:
           echo "Temp dir: ${{ needs.setup.outputs.temp_dir }}"
           echo "Release dir: ${{ needs.setup.outputs.release_dir }}"
           echo "Target dir: ${{ needs.setup.outputs.target_dir }}"
+          echo "Docker dir: ${{ needs.setup.outputs.docker_dir }}"
 
       - name: Rollback to previous version
         uses: appleboy/ssh-action@master
@@ -141,6 +149,7 @@ jobs:
           script: |
             RELEASE_DIR="${{ needs.setup.outputs.release_dir }}"
             TARGET_DIR="${{ needs.setup.outputs.target_dir }}"
+            DOCKER_DIR="${{ needs.setup.outputs.docker_dir }}"
 
             cd $RELEASE_DIR
             PREVIOUS_RELEASE=$(ls -t | head -n 2 | tail -n 1)

@@ -36,7 +36,7 @@ class ImportExcelController extends Controller
         ];
 
         if (count($bodyArr) >= 5) {
-            throw ValidationException::withMessages(['limit' => 'Превышен лимит в 5 рядов']);
+            throw ValidationException::withMessages(['limit' => 'Превышен лимит рядов (5)']);
         }
 
         // Сохраняем в кэш

@@ -119,10 +119,13 @@ jobs:
             # Install dependencies and optimize
             cd $DOCKER_DIR
             chmod -R 777 /var/www/back && chown -R 33:33 /var/www/back
+            echo "Stopping containers..."
             docker compose down
             sleep 5
+            echo "Starting containers..."
             docker compose up -d
             sleep 5
+            echo "Installing dependencies..."
             docker exec -it php-fpm composer install --optimize-autoloader --no-dev
             docker exec -it php-fpm php artisan optimize:clear && php artisan optimize
             echo "Installed dependencies"

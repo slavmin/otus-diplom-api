@@ -106,11 +106,11 @@ jobs:
             ls -la $RELEASE_DIR || exit 1
             [ "$(ls -A $RELEASE_DIR)" ] || { echo "Release directory is empty!"; exit 1; }
 
-#            # Install dependencies and optimize
-#            cd $RELEASE_DIR
-#            composer install --optimize-autoloader --no-dev
-#            php artisan optimize:clear && php artisan optimize
-#            echo "Installed dependencies"
+            # Install dependencies and optimize
+            #cd $RELEASE_DIR
+            #composer install --optimize-autoloader --no-dev
+            #php artisan optimize:clear && php artisan optimize
+            #echo "Installed dependencies"
 
             # Update symlink atomically
             ln -sfn "$RELEASE_DIR" "${TARGET_DIR}.tmp" && mv -fT "${TARGET_DIR}.tmp" "$TARGET_DIR"

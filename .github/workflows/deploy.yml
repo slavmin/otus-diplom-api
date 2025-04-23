@@ -87,7 +87,12 @@ jobs:
             mkdir -p $RELEASE_DIR || exit 1
             echo "Created release directory at $RELEASE_DIR"
 
-            # Copy files with verification
+            # Copy files from target dir with verification
+            echo "Copying files from $TARGET_DIR to $RELEASE_DIR"
+            cp -Rv $TARGET_DIR/. $RELEASE_DIR/ || exit 1
+            echo "Copied files successfully"
+
+            # Copy files from temp dir with verification
             echo "Copying files from $TEMP_DIR to $RELEASE_DIR"
             cp -Rv $TEMP_DIR/. $RELEASE_DIR/ || exit 1
             echo "Copied files successfully"
@@ -97,12 +102,18 @@ jobs:
             ls -la $RELEASE_DIR || exit 1
             [ "$(ls -A $RELEASE_DIR)" ] || { echo "Release directory is empty!"; exit 1; }
 
+            # Install dependencies and optimize
+            cd $RELEASE_DIR
+            composer install --optimize-autoloader --no-dev
+            php artisan optimize:clear && php artisan optimize
+            echo "Installed dependencies"
+
             # Update symlink atomically
             ln -sfn $RELEASE_DIR $TARGET_DIR.tmp && mv -f $TARGET_DIR.tmp $TARGET_DIR
             echo "Updated symlink to point to $RELEASE_DIR"
 
             # Cleanup (uncomment when working)
-            rm -rf $TEMP_DIR/*
+            rm -rf $TEMP_DIR/.
             echo "Cleaned up temp directory"
 
   rollback:

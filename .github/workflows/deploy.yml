@@ -87,11 +87,13 @@ jobs:
             mkdir -p $RELEASE_DIR || exit 1
             echo "Created release directory at $RELEASE_DIR"
 
-            # Copy files from target dir with verification
-            if [ -f "$TARGET_DIR/.env" ]; then
-              echo "Copying files from $TARGET_DIR to $RELEASE_DIR"
+            # Copy files from target dir
+            if [ -d "$TARGET_DIR" ]; then
+              echo "Copying existing files from $TARGET_DIR to $RELEASE_DIR"
               cp -a "$TARGET_DIR"/. "$RELEASE_DIR/" || exit 1
-              echo "Copied files successfully"
+              echo "Existing files (including .env) copied"
+            else
+              echo "Notice: No existing deployment found (first deploy?)"
             fi
 
             # Copy files from temp dir with verification

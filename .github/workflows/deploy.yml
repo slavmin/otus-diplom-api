@@ -88,9 +88,11 @@ jobs:
             echo "Created release directory at $RELEASE_DIR"
 
             # Copy files from target dir with verification
-            echo "Copying files from $TARGET_DIR.tmp to $RELEASE_DIR"
-            cp -Rv $TARGET_DIR.tmp/. $RELEASE_DIR/ || exit 1
-            echo "Copied files successfully"
+            if [ "$(ls -A $TARGET_DIR)" ]; then
+              echo "Copying files from $TARGET_DIR to $RELEASE_DIR"
+              cp -Rv $TARGET_DIR/. $RELEASE_DIR/ || exit 1
+              echo "Copied files successfully"
+            fi
 
             # Copy files from temp dir with verification
             echo "Copying files from $TEMP_DIR to $RELEASE_DIR"

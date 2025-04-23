@@ -111,9 +111,8 @@ jobs:
             echo "Installed dependencies"
 
             # Update symlink atomically
-            ln -sfn $RELEASE_DIR $TARGET_DIR.tmp && mv -f $TARGET_DIR.tmp $TARGET_DIR
-            echo "Updated symlink to point $TARGET_DIR to $RELEASE_DIR"
             ln -sfn "$RELEASE_DIR" "${TARGET_DIR}.tmp" && mv -fT "${TARGET_DIR}.tmp" "$TARGET_DIR"
+            echo "Updated symlink to point $TARGET_DIR to $RELEASE_DIR"
 
             # Cleanup (uncomment when working)
             rm -rf $TEMP_DIR/.

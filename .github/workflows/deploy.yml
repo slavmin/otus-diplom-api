@@ -126,8 +126,8 @@ jobs:
             docker compose up -d
             sleep 5
             echo "Installing dependencies..."
-            docker exec -it php-fpm composer install --optimize-autoloader --no-dev
-            docker exec -it php-fpm php artisan optimize:clear && php artisan optimize
+            docker exec php-fpm composer install --optimize-autoloader --no-dev
+            docker exec php-fpm php artisan optimize:clear && php artisan optimize
             echo "Installed dependencies"
 
   rollback:

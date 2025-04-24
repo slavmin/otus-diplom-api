@@ -23,16 +23,16 @@ WORKDIR $APP_DIR
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libz-dev \
-    libjpeg-dev \
-    libwebp-dev \
-    libfreetype6-dev \
-    libmemcached-dev \
-    libssl-dev \
     libonig-dev \
+    libicu-dev \
+    libssl-dev \
     libxml2-dev \
     libxslt-dev \
-    libicu-dev \
     libreadline-dev \
+	libjpeg-dev \
+	libwebp-dev \
+	libfreetype6-dev \
+	libmemcached-dev \
     unzip \
     git \
     supervisor \

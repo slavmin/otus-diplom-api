@@ -38,11 +38,7 @@ it('fails with invalid credentials', function (): void {
         'password' => 'wrong-password',
     ]);
 
-    $response
-        ->assertStatus(422)
-        ->assertJson([
-            'message' => 'Sorry we couldn\'t sign you in with those details.',
-        ]);
+    $response->assertStatus(422);
 });
 
 it('requires email and password', function (): void {

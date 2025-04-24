@@ -27,7 +27,7 @@ class LoginController extends Controller
         $user = User::query()->where('email', $credentials['email'])->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            abort(422, 'Sorry we couldn\'t sign you in with those details.');
+            abort(422, 'Укажите верные данные');
         }
 
         $token = $user->createToken('access_token');

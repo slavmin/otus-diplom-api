@@ -20,6 +20,7 @@ services:
 
   php-fpm:
     build:
+      context: .
       dockerfile: ./php/Dockerfile
       args:
         HOST_TZ: ${HOST_TZ:-UTC}
